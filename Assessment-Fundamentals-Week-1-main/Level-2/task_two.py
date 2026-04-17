@@ -19,17 +19,21 @@ def add_to_basket(item: dict) -> list:
 
 def multiple_foods_with_count(basket: list) -> list:
     """This function will remove duplicate items from basket and add count of them"""
-    new_basket = []
     for item in basket:
-        if item not in new_basket:
+        if item not in basket:
             count = basket.count(item)
             item["count"] = count
-            new_basket.append(item)
-    if count > 1:
-        for item in new_basket:
-            if item["count"] > 1:
-                item["price"] = item["price"] * item["count"]
-    return new_basket
+            basket.append(item)
+
+
+
+def update_price_for_multiple_foods(basket: list) -> list:
+    """updates prices"""
+    for item in basket:
+        if item["count"] > 1:
+            item["price"] = item["price"] * item["count"]
+        
+    return basket
 
 
 
@@ -38,6 +42,7 @@ def generate_receipt(basket: list) -> str:
         return "Basket is empty"
     receipt = ""
     new_basket = multiple_foods_with_count(basket)
+    new_basket = update_price_for_multiple_foods(new_basket)
     for item in new_basket:
         if item["price"] == 0.0:
             receipt += f"{item['name']} x {item['count']} - Free\n"
