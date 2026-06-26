@@ -4,3 +4,4 @@ pylint
 pytest
 altair
 vl-convert-python
+matplotlib
