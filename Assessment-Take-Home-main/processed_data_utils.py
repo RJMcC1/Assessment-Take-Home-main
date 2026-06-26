@@ -4,9 +4,22 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import matplotlib.pyplot as plt
 import pandas as pd
 
 PROCESSED_REQUIRED_COLUMNS = {"title", "author_name", "year", "rating", "ratings"}
+
+
+def processed_csv_path(script_file: str | Path) -> Path:
+    """Return the standard PROCESSED_DATA.csv path for a script module."""
+    return Path(script_file).resolve().parent / "PROCESSED_DATA.csv"
+
+
+def save_current_figure(output_path: Path, dpi: int = 150) -> None:
+    """Apply layout and persist the active matplotlib figure."""
+    plt.tight_layout()
+    plt.savefig(output_path, dpi=dpi)
+    plt.close()
 
 
 def load_processed_data(

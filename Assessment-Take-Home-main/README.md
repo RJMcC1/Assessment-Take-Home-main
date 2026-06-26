@@ -79,6 +79,8 @@ When run, this script should load a `PROCESSED_DATA.csv` file and produce the fo
 
 Use your own judgement when processing and identifying keywords.
 
+
+
 ### [OPTIONAL] Task 4
 
 Adora Enhance envisions the final version of the pipeline working as follows:
@@ -96,3 +98,20 @@ Using [Tableau Public](https://public.tableau.com/app/discover), create an inter
 This dashboard should contain a range of well-chosen visualisations.
 
 Include a link to the live dashboard with your code.
+
+## Unit Tests
+
+This repository now includes a `pytest` test suite that validates both required scripts.
+
+Run tests from the project root:
+
+```bash
+python -m pytest -q
+```
+
+Coverage includes:
+
+- title cleaning and row filtering in `process_raw_data.py`
+- schema validation and numeric normalization in `process_raw_data.py`
+- consistency check against `RAW_DATA_4.csv` and `EXAMPLE_DATA_4.csv`
+- input validation and chart file generation in `analyse_processed_data.py`
