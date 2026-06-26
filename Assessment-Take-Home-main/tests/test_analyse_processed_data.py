@@ -6,6 +6,7 @@ import pytest
 from analyse_processed_data import (
 	create_decade_releases_chart,
 	create_top_authors_chart,
+	get_top_authors_by_ratings,
 	load_processed_data,
 )
 
@@ -87,3 +88,21 @@ def test_create_top_authors_chart_raises_for_invalid_rows(tmp_path: Path) -> Non
 
 	with pytest.raises(ValueError, match="No valid author/ratings data"):
 		create_top_authors_chart(df, tmp_path / "top_authors.png")
+
+
+def test_get_top_authors_by_ratings_has_deterministic_tie_order() -> None:
+	df = pd.DataFrame(
+		{
+			"title": ["A", "B", "C", "D"],
+			"author_name": ["Zoe", "Amy", "Zoe", "Amy"],
+			"year": [2001, 2002, 2003, 2004],
+			"rating": [4.0, 4.0, 4.1, 4.2],
+			"ratings": [100, 100, 50, 50],
+		}
+	)
+
+	result = get_top_authors_by_ratings(df, limit=10)
+
+	# Both authors total 150 ratings; alphabetical tie-breaker keeps deterministic order.
+	assert result["author_name"].tolist() == ["Amy", "Zoe"]
+	assert result["ratings"].tolist() == [150, 150]
